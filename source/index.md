@@ -185,7 +185,53 @@ Remember — a happy kitten is an authenticated kitten!
 ## Borrar una serie
 
 # Temporadas
+
+## Crear una temporada
+
+## Ver una temporada
+
+## Ver todas las temporadas
+
+## Actualizar una temporada
+
+## Borrar una temporada
+
 # Episodios
+
+## Crear un episodio
+
+## Ver un episodio
+
+## Ver todos los episodios
+
+## Actualizar un episodio
+
+## Borrar un episodio
+
 # Películas
+
+## Crear una película
+
+## Ver una película
+
+## Ver todas las películas
+
+## Ver una película aleatoria
+
+## Actualizar una película
+
+## Borrar una película
+
 # Listas
 
+## Crear una lista
+
+## Ver una lista
+
+## Ver todas las listas
+
+## Ver listas aleatorias
+
+## Actualizar una lista
+
+## Borrar una lista
