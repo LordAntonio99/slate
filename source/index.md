@@ -1,15 +1,12 @@
 ---
-title: API Reference
+title: Pumpum API
 
 language_tabs: # must be one of https://prismjs.com/#supported-languages
   - shell
-  - ruby
   - python
   - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
 
 includes:
   - errors.md
@@ -18,223 +15,177 @@ search: true
 code_clipboard: true
 ---
 
-# Introduction
+# Introducción
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+Bienvenido a la API de Pumpum! Puedes usar nuestra API para ver el funcionamiento de la página web, tanto en el manejo de usuarios como con la base de datos que contiene todo.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+Esta documentación esta disponible con los lenguajes de Shell (curl), Python y Javascript! Para poder navegar y ver los ejemplos con los diferentes lenguajes, los encontrarás en forma de pestaña en la sección de arriba a la derecha de la página.
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+Esta web está creada única y exclusivamente para la realización de un proyecto de fin de grado.
 
-# Authentication
+# Autenticación
 
-> To authorize, use this code:
+## Registro
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
+> Para crear un nuevo usuario utilizar el siguiente código:
 
 ```python
-import kittn
+import requests
 
-api = kittn.authorize('meowmeowmeow')
+url = "http://localhost:3000/api/auth/register"
+
+payload = "{\r\n    \"email\": \"demo@pruebas.local\",\r\n    \"password\": \"123\",\r\n    \"username\": \"Demo\"\r\n}"
+headers = {}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
 ```
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+curl --location --request POST 'http://localhost:3000/api/auth/register' \
+--data-raw '{
+    "email": "demo@pruebas.local",
+    "password": "123",
+    "username": "Demo"
+}'
 ```
 
 ```javascript
-const kittn = require('kittn');
+var raw = "{\r\n    \"email\": \"demo@pruebas.local\",\r\n    \"password\": \"123\",\r\n    \"username\": \"Demo\"\r\n}";
 
-let api = kittn.authorize('meowmeowmeow');
+var requestOptions = {
+  method: 'POST',
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch("http://localhost:3000/api/auth/register", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
+> Con una ejecución correcta, nos devolverá el siguiente objeto.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+```json
+{
+    "username": "demo",
+    "email": "demo@pruebas.local",
+    "password": "U2FsdGVkX1+bJ6LHzzaFbct6CPr7LX5bTCrgrJURsrE=",
+    "profilePic": "",
+    "isAdmin": false,
+    "_id": "6267e1da2d182b1e3465b1fe",
+    "createdAt": "2022-04-26T12:13:14.096Z",
+    "updatedAt": "2022-04-26T12:13:14.096Z",
+    "__v": 0
+}
+```
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+Para poder realizar la mayoría de llamadas de la API, vamos a necesitar una nueva cuenta creada en la base de datos, ya que vamos a funcionar principalmente con el código "_id" único de cada usuario, y las sesiones con JWT.
 
-`Authorization: meowmeowmeow`
+Una vez nos hayamos registrado correctamente, deberemos dejar guardado nuestro "_id", para futuras llamadas a la api.
+
+### HTTP Request
+
+`POST http://localhost:3000/api/auth/register`
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+Si la cuenta está creada, prueba con otros datos aleatorios. Sabrás que ha funcionado cuando la llamada devuelva el código 201.
 </aside>
 
-# Kittens
+## Inicio de sesión
 
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
+> Ejemplo de inicio de sesión
 
 ```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
+import requests
+ 
+url = "http://localhost:3000/api/auth/login"
+ 
+payload = "{\r\n    \"email\": \"demo@pruebas.local\",\r\n    \"password\": \"123\"\r\n}"
+headers = {}
+ 
+response = requests.request("POST", url, headers=headers, data=payload)
+ 
+print(response.text)
 ```
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+curl --location --request POST 'http://localhost:3000/api/auth/login' \
+--data-raw '{
+    "email": "demo@pruebas.local",
+    "password": "123"
+}'
 ```
 
 ```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+var raw = "{\r\n    \"email\": \"demo@pruebas.local\",\r\n    \"password\": \"123\"\r\n}";
+ 
+var requestOptions = {
+  method: 'POST',
+  body: raw,
+  redirect: 'follow'
+};
+ 
+fetch("http://localhost:3000/api/auth/login", requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
 ```
 
-> The above command returns JSON structured like this:
+> Si el usuario es capaz de iniciar sesión, podremos observar que nos proporciona el código JWT:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+    "_id": "6267e1da2d182b1e3465b1fe",
+    "username": "demo",
+    "email": "demo@pruebas.local",
+    "profilePic": "",
+    "isAdmin": false,
+    "createdAt": "2022-04-26T12:13:14.096Z",
+    "updatedAt": "2022-04-26T12:13:14.096Z",
+    "__v": 0,
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNjdlMWRhMmQxODJiMWUzNDY1YjFmZSIsImlzQWRtaW4iOmZhbHNlLCJpYXQiOjE2NTA5Nzc5NjcsImV4cCI6MTY1MTQwOTk2N30.45rizE5PZTxxLuIg8VAf9aqafwd0-H5rVcb6pDCV8A0"
+}
 ```
 
-This endpoint retrieves all kittens.
+Para la mayoría de las llamadas de la aplicación, vamos a necesitar del código JWT, el cual se nos da cuando iniciamos sesión, dentro del campo de <code>accessToken</code>.
+
+Si nos ólvidamos de nuestro código o no lo hemos apuntado, podemos volver a efectuar esta llamada, ya que nos devolverá otra vez el mismo mientras sea válido por su duración.
 
 ### HTTP Request
 
-`GET http://example.com/api/kittens`
+`POST http://localhost:3000/api/auth/login`
 
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
+<!-- <aside class="success">
 Remember — a happy kitten is an authenticated kitten!
-</aside>
+</aside> -->
 
-## Get a Specific Kitten
+# Usuarios
 
-```ruby
-require 'kittn'
+## Ver un usuario
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+## Ver todos los usuarios
 
-```python
-import kittn
+## Actualizar un usuario
 
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+## Borrar un usuario
 
-```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
-```
+# Series
 
-```javascript
-const kittn = require('kittn');
+## Crear una serie
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
+## Ver una serie
 
-> The above command returns JSON structured like this:
+## Ver todas las series
 
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
-}
-```
+## Actualizar una serie
 
-This endpoint retrieves a specific kitten.
+## Borrar una serie
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "deleted" : ":("
-}
-```
-
-This endpoint deletes a specific kitten.
-
-### HTTP Request
-
-`DELETE http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+# Temporadas
+# Episodios
+# Películas
+# Listas
 
