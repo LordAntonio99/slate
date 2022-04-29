@@ -984,18 +984,129 @@ print(response.text)
 ```
 ## Borrar una temporada
 
+> Ejemplo para borrar una temporada
+
+```shell
+curl --location --request DELETE 'http://localhost:3000/api/seasons/626a80558c1aa86b6f901ece'
+```
+
+> Si la llamada a la API es correcta, nos devolverá:
+
+```shell
+"The season has been properly deleted"
+```
+
+Para terminar la sección de las temporadas, tenemos la opción de borrar cualquier temporada mediante su id único.
+
+Esta llamada estará solo disponible para los administradores y no para los usuarios comunes.
+
+### HTTP Request
+`DELETE http://localhost:3000/api/seasons/<id temporada>`
 # Episodios
 
 ## Crear un episodio
 
+> Ejemplo para crear un episodio
+
+```shell
+curl --location --request POST 'http://localhost:3000/api/episodes/' \
+--data-raw '{
+    "title": "Episodio de ejemplo",
+    "desc": "Descripción de ejemplo",
+    "season": "1",
+    "episode": 1,
+    "duration": 23
+}'
+```
+
+```json
+{
+    "title": "Episodio de ejemplo",
+    "desc": "Descripción de ejemplo",
+    "season": "1",
+    "episode": 1,
+    "duration": 23,
+    "_id": "626b8e868bfa9e3436f766e3",
+    "createdAt": "2022-04-29T07:06:46.382Z",
+    "updatedAt": "2022-04-29T07:06:46.382Z",
+    "__v": 0
+}
+```
 ## Ver un episodio
 
+```shell
+curl --location --request GET 'http://localhost:3000/api/episodes/626ad7d44f3f4daebced23f9' \
+--header 'Token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNmFkNmE5OThkZTYxYzFmYTkwZGQ3ZiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MTE2OTIxNywiZXhwIjoxNjUxNjAxMjE3fQ.9OVOtfc9DB1R3MekW6PrZ8Pm5ujU3Go0pmcaG4nlFXk'
+```
+
+```json
+{
+    "_id": "626b8e868bfa9e3436f766e3",
+    "title": "Episodio de ejemplo",
+    "desc": "Descripción de ejemplo",
+    "season": "1",
+    "episode": 1,
+    "duration": 23,
+    "createdAt": "2022-04-29T07:06:46.382Z",
+    "updatedAt": "2022-04-29T07:06:46.382Z",
+    "__v": 0
+}
+```
 ## Ver todos los episodios
 
+```shell
+curl --location --request GET 'http://localhost:3000/api/episodes/all' \
+--header 'Token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNmFkNmE5OThkZTYxYzFmYTkwZGQ3ZiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MTE2OTIxNywiZXhwIjoxNjUxNjAxMjE3fQ.9OVOtfc9DB1R3MekW6PrZ8Pm5ujU3Go0pmcaG4nlFXk'
+```
+
+```json
+[
+    {
+        "_id": "626b8f268bfa9e3436f766e9",
+        "title": "Episodio de ejemplo",
+        "desc": "Descripción de ejemplo",
+        "season": "1",
+        "episode": 1,
+        "duration": 23,
+        "createdAt": "2022-04-29T07:09:26.741Z",
+        "updatedAt": "2022-04-29T07:09:26.741Z",
+        "__v": 0
+    }
+]
+```
 ## Actualizar un episodio
 
+```shell
+curl --location --request PUT 'http://localhost:3000/api/episodes/626ad7d44f3f4daebced23f9' \
+--header 'Token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNmFkNmE5OThkZTYxYzFmYTkwZGQ3ZiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MTE2OTIxNywiZXhwIjoxNjUxNjAxMjE3fQ.9OVOtfc9DB1R3MekW6PrZ8Pm5ujU3Go0pmcaG4nlFXk' \
+--data-raw '{
+    "title": "Episodio actualizado"
+}'
+```
+
+```json
+{
+    "_id": "626b8f268bfa9e3436f766e9",
+    "title": "Episodio actualizado",
+    "desc": "Descripción de ejemplo",
+    "season": "1",
+    "episode": 1,
+    "duration": 23,
+    "createdAt": "2022-04-29T07:09:26.741Z",
+    "updatedAt": "2022-04-29T07:09:51.258Z",
+    "__v": 0
+}
+```
 ## Borrar un episodio
 
+```shell
+curl --location --request DELETE 'http://localhost:3000/api/episodes/626b8e868bfa9e3436f766e3' \
+--header 'Token: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyNmFkNmE5OThkZTYxYzFmYTkwZGQ3ZiIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY1MTE2OTIxNywiZXhwIjoxNjUxNjAxMjE3fQ.9OVOtfc9DB1R3MekW6PrZ8Pm5ujU3Go0pmcaG4nlFXk'
+```
+
+```json
+"The episode has ben deleted succesfully"
+```
 # Películas
 
 ## Crear una película
